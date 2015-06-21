@@ -58,7 +58,10 @@ class PrintHistoryPlugin(octoprint.plugin.StartupPlugin,
 
             if history_dict is not None:
                 self._logger.debug("Returning data")
-                return jsonify(history=history_dict)
+                # return the dict sorted by timestamp
+                history_dict_sorted = history_dict.sort(
+                    key=lambda x: x.timestamp, reverse=True)
+                return jsonify(history=history_dict_sorted)
             else:
                 self._logger.debug("Empty file history.yaml")
                 return jsonify({})
